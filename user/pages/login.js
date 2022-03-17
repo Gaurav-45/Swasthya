@@ -8,6 +8,7 @@ import facebook from '../public/facebook.svg'
 import {useRouter} from 'next/router'
 import { firebaseApp } from '../config/firebaseApp'
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
+import axios from 'axios'
 
 const Login = () => {
 
@@ -20,7 +21,21 @@ const Login = () => {
 
     const handleLogin=(e)=>{
         e.preventDefault();
-        console.log(creds)
+
+        const authentication = getAuth();
+        signInWithEmailAndPassword(authentication, creds.identifier, creds.password)
+        .then((response) => {
+            const firebaseUid = response.user.uid
+
+            axios.get("http://localhost:8800/user", {params : {firebaseUid : firebaseUid}})
+            .then((response) => {
+                console.log(response)
+                router.push('/')
+            })
+            .catch((err) => console.log(err))
+
+            
+        })
     }
 
   return (
