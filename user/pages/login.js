@@ -5,8 +5,14 @@ import styles from '../styles/login.module.css'
 import Link from 'next/link'
 import google from '../public/google.svg';
 import facebook from '../public/facebook.svg'
+import {useRouter} from 'next/router'
+import { firebaseApp } from '../config/firebaseApp'
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 
 const Login = () => {
+
+    const router = useRouter();
+
     const [creds, setCreds] = useState({
         identifier:"",
         password:""
@@ -45,7 +51,7 @@ const Login = () => {
                         </div>
                         <div className={styles.thirdParty}>
                             <button className={styles.authBtn}><Image src={google} alt="google-logo" height={25}/>Sign in using Google</button>
-                            <button className={styles.authBtn}><Image src={facebook} alt="facebook-logo" height={25}/>Sign in using Facebook</button>
+                            {/* <button className={styles.authBtn}><Image src={facebook} alt="facebook-logo" height={25}/>Sign in using Facebook</button> */}
                         </div>
                     </form>
                     <p className={styles.subtitle}>Don't have an account? <Link href="/register"><a>Sign-up</a></Link></p>

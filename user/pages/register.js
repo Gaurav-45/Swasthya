@@ -6,16 +6,35 @@ import Link from 'next/link'
 import registerImage from '../public/register.png'
 import google from '../public/google.svg';
 import facebook from '../public/facebook.svg'
+import {useRouter} from 'next/router'
+import { firebaseApp } from '../config/firebaseApp'
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
+import axios from 'axios'
 
 const Register = () => {
+
+    const router = useRouter();
+
     const [creds, setCreds] = useState({
         identifier:"",
         password:""
     })
 
-    const handleLogin=(e)=>{
+    const register = e =>{
         e.preventDefault();
-        console.log(creds)
+
+        const authentication = getAuth();
+        createUserWithEmailAndPassword(authentication, creds.identifier, creds.password)
+        .then((response) => {
+            const firebaseUid = response.user.uid
+            const email = response.user.email
+            const name = "Pranav Kumar"
+
+            const body = {email : email, name : name, firebaseUid : firebaseUid}
+
+            axios.post("http://localhost:8800/user", body)
+            .then((response) => console.log(response))
+        })
     }
 
   return (
@@ -29,7 +48,7 @@ const Register = () => {
             </div>
             <div className={styles.sidehug}>
                 <div className={styles.signIn}>
-                    <form onSubmit={handleLogin}  className={styles.form}>
+                    <form onSubmit={register}  className={styles.form}>
                         <h3 className={`${styles.center} ${styles.heading}`}>Register</h3>
                         <div className={styles.element}>
                             <label>Email</label>
@@ -49,7 +68,7 @@ const Register = () => {
                         </div>
                         <div className={styles.thirdParty}>
                             <button className={styles.authBtn}><Image src={google} alt="google-logo" height={25}/>Sign up using Google</button>
-                            <button className={styles.authBtn}><Image src={facebook} alt="facebook-logo" height={25}/>Sign up using Facebook</button>
+                            {/* <button className={styles.authBtn}><Image src={facebook} alt="facebook-logo" height={25}/>Sign up using Facebook</button> */}
                         </div>
                     </form>
                 </div>
