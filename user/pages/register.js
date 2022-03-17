@@ -55,21 +55,22 @@ const Register = () => {
             const email = user.email
             const name = user.displayName
 
-            axios.get("http://localhost:8800/user", {params : {firebaseUid : firebaseUid}})
+            axios.post("http://localhost:8800/user/present", {params : {firebaseUid : firebaseUid}})
             .then((response) => {
-                console.log(response)
-                router.push('/')
-            })
-            .catch((err) => {
-                const body = {email : email, name : name, firebaseUid : firebaseUid}
+                if(response.data.present){
+                    console.log("Already Present")
+                }
+                else{
+                    const body = {email : email, name : name, firebaseUid : firebaseUid}
 
-                axios.post("http://localhost:8800/user", body)
-                .then((response) => {
-                    console.log(response)
-                    router.push('/')
-                })
-                .catch(err =>  console.log(err))
+                    axios.post("http://localhost:8800/user", body)
+                    .then((response) => {
+                        router.push('/')
+                    })
+                    .catch(err =>  console.log(err))
+                }
             })
+            .catch((err) => console.log(err))
             
   
         }).catch((error) => {
