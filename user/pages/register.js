@@ -37,6 +37,11 @@ const Register = () => {
         })
     }
 
+    const handleGoogleRegister = (e) => {
+        e.preventDefault()
+        
+    }
+
   return (
     <div className={styles.login}>
         <div className={styles.container}>
@@ -67,7 +72,7 @@ const Register = () => {
                             <hr/>
                         </div>
                         <div className={styles.thirdParty}>
-                            <button className={styles.authBtn}><Image src={google} alt="google-logo" height={25}/>Sign up using Google</button>
+                            <button className={styles.authBtn} onClick={handleGoogleRegister}><Image src={google} alt="google-logo" height={25}/>Sign up using Google</button>
                             {/* <button className={styles.authBtn}><Image src={facebook} alt="facebook-logo" height={25}/>Sign up using Facebook</button> */}
                         </div>
                     </form>
