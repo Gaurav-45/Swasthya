@@ -7,7 +7,7 @@ import google from '../public/google.svg';
 import facebook from '../public/facebook.svg'
 import {useRouter} from 'next/router'
 import { firebaseApp } from '../config/firebaseApp'
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
+import { getAuth, signInWithEmailAndPassword,GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword } from 'firebase/auth'
 import axios from 'axios'
 
 const Login = () => {
@@ -18,11 +18,12 @@ const Login = () => {
         identifier:"",
         password:""
     })
-
+    
+    const authentication = getAuth();
     const handleLogin=(e)=>{
         e.preventDefault();
-
-        const authentication = getAuth();
+        console.log("hi")
+        
         signInWithEmailAndPassword(authentication, creds.identifier, creds.password)
         .then((response) => {
             const firebaseUid = response.user.uid
@@ -34,8 +35,29 @@ const Login = () => {
             })
             .catch((err) => console.log(err))
 
-            
         })
+        .catch((err) => {console.log(err)})
+    }
+
+    //google
+    const provider = new GoogleAuthProvider();
+    const handleGoogleLogin =(e)=>
+    {
+        signInWithPopup(authentication, provider)
+        .then((result) => {
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+            const user = result.user;
+            console.log(user)
+  
+        }).catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            const email = error.email;
+            const credential = GoogleAuthProvider.credentialFromError(error);
+    
+        });
     }
 
   return (
@@ -65,7 +87,7 @@ const Login = () => {
                             <hr/>
                         </div>
                         <div className={styles.thirdParty}>
-                            <button className={styles.authBtn}><Image src={google} alt="google-logo" height={25}/>Sign in using Google</button>
+                            <button className={styles.authBtn} onClick={handleGoogleLogin}><Image src={google} alt="google-logo" height={25}/>Sign in using Google</button>
                             {/* <button className={styles.authBtn}><Image src={facebook} alt="facebook-logo" height={25}/>Sign in using Facebook</button> */}
                         </div>
                     </form>
