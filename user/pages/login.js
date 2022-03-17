@@ -22,7 +22,6 @@ const Login = () => {
     const authentication = getAuth();
     const handleLogin=(e)=>{
         e.preventDefault();
-        console.log("hi")
         
         signInWithEmailAndPassword(authentication, creds.identifier, creds.password)
         .then((response) => {
@@ -41,14 +40,34 @@ const Login = () => {
 
     //google
     const provider = new GoogleAuthProvider();
-    const handleGoogleLogin =(e)=>
-    {
+    const handleGoogleLogin =(e)=> {
+
+        e.preventDefault()
+
         signInWithPopup(authentication, provider)
         .then((result) => {
-            const credential = GoogleAuthProvider.credentialFromResult(result);
-            const token = credential.accessToken;
             const user = result.user;
-            console.log(user)
+            
+            const firebaseUid = user.uid
+            const email = user.email
+            const name = user.displayName
+
+            axios.get("http://localhost:8800/user", {params : {firebaseUid : firebaseUid}})
+            .then((response) => {
+                console.log(response)
+                router.push('/')
+            })
+            .catch((err) => {
+                const body = {email : email, name : name, firebaseUid : firebaseUid}
+
+                axios.post("http://localhost:8800/user", body)
+                .then((response) => {
+                    console.log(response)
+                    router.push('/')
+                })
+                .catch(err =>  console.log(err))
+            })
+            
   
         }).catch((error) => {
             // Handle Errors here.
@@ -56,7 +75,6 @@ const Login = () => {
             const errorMessage = error.message;
             const email = error.email;
             const credential = GoogleAuthProvider.credentialFromError(error);
-    
         });
     }
 
