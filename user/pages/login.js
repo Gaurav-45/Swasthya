@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useContext,useEffect } from 'react'
 import loginImage from '../public/login.png'
 import Image from 'next/image'
 import styles from '../styles/login.module.css'
@@ -9,20 +9,51 @@ import {useRouter} from 'next/router'
 import { firebaseApp } from '../config/firebaseApp'
 import { getAuth, signInWithEmailAndPassword,GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword } from 'firebase/auth'
 import axios from 'axios'
+import { UserContext } from '../UserContext'
 
 const Login = () => {
 
+    const [loggedIn,setLogin] = useState(false);
     const router = useRouter();
-
+    const {guser,setUser} = useContext(UserContext);
     const [creds, setCreds] = useState({
         identifier:"",
         password:""
     })
-    
+    useEffect(async() => {
+        const resp = await axios.get("http://localhost:8800/user/logged",{withCredentials: true })
+
+        if(resp.data)
+        {
+            if(resp.data.loggedIn)
+            {
+                setUser(resp.data.user);
+                setLogin(true);
+            }
+        }
+        else
+        {
+            console.log("nothing");
+        }
+        
+
+       
+      });
+
+      useEffect(() => {
+              
+        if(loggedIn)
+        {
+            router.push('/details')
+        }
+       
+      },[loggedIn]);
+
+
     const authentication = getAuth();
     const handleLogin=(e)=>{
         e.preventDefault();
-        
+    
         signInWithEmailAndPassword(authentication, creds.identifier, creds.password)
         .then((response) => {
             const firebaseUid = response.user.uid
@@ -30,12 +61,15 @@ const Login = () => {
             axios.get("http://localhost:8800/user", {params : {firebaseUid : firebaseUid}})
             .then((response) => {
                 console.log(response)
-                router.push('/')
+                // router.push('/')
+
             })
-            .catch((err) => console.log(err))
+            .catch((err) => console.log(err)
+    
+            )
 
         })
-        .catch((err) => {console.log(err)})
+        .catch((err) => {window.alert("Invalid username or password please try again")})
     }
 
     //google
@@ -52,17 +86,22 @@ const Login = () => {
             const email = user.email
             const name = user.displayName
 
-            axios.post("http://localhost:8800/user/present", {params : {firebaseUid : firebaseUid}})
+            console.log(user)
+            setUser(user)
+            axios.post("http://localhost:8800/user/present", {params : {firebaseUid : firebaseUid}},{
+                withCredentials: true //correct
+              })
             .then((response) => {
-                if(response.data.present){
+                if(response.data.present === true){
                     console.log("Already Present")
+                    router.push('/details')
                 }
                 else{
                     const body = {email : email, name : name, firebaseUid : firebaseUid}
 
                     axios.post("http://localhost:8800/user", body)
                     .then((response) => {
-                        router.push('/')
+                        router.push('/details')
                     })
                     .catch(err =>  console.log(err))
                 }
@@ -71,11 +110,9 @@ const Login = () => {
             
   
         }).catch((error) => {
-            // Handle Errors here.
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            const email = error.email;
-            const credential = GoogleAuthProvider.credentialFromError(error);
+            console.log(error)
+            window.alert("Invalid username or password please try again")
+           
         });
     }
 
