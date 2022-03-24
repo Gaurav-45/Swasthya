@@ -6,16 +6,81 @@ import Link from 'next/link'
 import registerImage from '../public/register.png'
 import google from '../public/google.svg';
 import facebook from '../public/facebook.svg'
+import {useRouter} from 'next/router'
+import { firebaseApp } from '../config/firebaseApp'
+import { getAuth, signInWithEmailAndPassword,GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword } from 'firebase/auth'
+import axios from 'axios'
 
 const Register = () => {
+
+    const router = useRouter();
+
     const [creds, setCreds] = useState({
         identifier:"",
         password:""
     })
 
-    const handleLogin=(e)=>{
+    const authentication = getAuth();
+
+    const register = e =>{
         e.preventDefault();
-        console.log(creds)
+
+        createUserWithEmailAndPassword(authentication, creds.identifier, creds.password)
+        .then((response) => {
+            const firebaseUid = response.user.uid
+            const email = response.user.email
+            const name = "Pranav Kumar"
+
+            const body = {email : email, name : name, firebaseUid : firebaseUid}
+
+            axios.post("http://localhost:8800/user", body)
+            .then((response) => {
+                console.log(response)
+                router.push('/login')
+            })
+            .catch(err =>  console.log(err))
+        })
+        .catch(err => console.log(err))
+    }
+
+    const provider = new GoogleAuthProvider();
+    const handleGoogleRegister = (e) => {
+        e.preventDefault()
+
+        signInWithPopup(authentication, provider)
+        .then((result) => {
+            const user = result.user;
+            
+            const firebaseUid = user.uid
+            const email = user.email
+            const name = user.displayName
+
+            axios.post("http://localhost:8800/user/present", {params : {firebaseUid : firebaseUid}})
+            .then((response) => {
+                if(response.data.present){
+                    console.log("Already Present")
+                }
+                else{
+                    const body = {email : email, name : name, firebaseUid : firebaseUid}
+
+                    axios.post("http://localhost:8800/user", body)
+                    .then((response) => {
+                        router.push('/')
+                    })
+                    .catch(err =>  console.log(err))
+                }
+            })
+            .catch((err) => console.log(err))
+            
+  
+        }).catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            const email = error.email;
+            const credential = GoogleAuthProvider.credentialFromError(error);
+        });
+        
     }
 
   return (
@@ -29,7 +94,7 @@ const Register = () => {
             </div>
             <div className={styles.sidehug}>
                 <div className={styles.signIn}>
-                    <form onSubmit={handleLogin}  className={styles.form}>
+                    <form onSubmit={register}  className={styles.form}>
                         <h3 className={`${styles.center} ${styles.heading}`}>Register</h3>
                         <div className={styles.element}>
                             <label>Email</label>
@@ -48,8 +113,8 @@ const Register = () => {
                             <hr/>
                         </div>
                         <div className={styles.thirdParty}>
-                            <button className={styles.authBtn}><Image src={google} alt="google-logo" height={25}/>Sign up using Google</button>
-                            <button className={styles.authBtn}><Image src={facebook} alt="facebook-logo" height={25}/>Sign up using Facebook</button>
+                            <button className={styles.authBtn} onClick={handleGoogleRegister}><Image src={google} alt="google-logo" height={25}/>Sign up using Google</button>
+                            {/* <button className={styles.authBtn}><Image src={facebook} alt="facebook-logo" height={25}/>Sign up using Facebook</button> */}
                         </div>
                     </form>
                 </div>
