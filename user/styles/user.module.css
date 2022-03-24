@@ -1,0 +1,40 @@
+.user{
+    display: flex;
+    flex-flow: row;
+    height: 100vh;
+    font-size: 18px;
+    
+}
+
+.profile{
+    border-right: 1px solid rgb(224, 224, 224);
+    flex-grow: 2;
+    display: flex;
+    flex-flow: column;  
+    justify-content: center;
+    align-items: center;
+}
+
+.pic{
+    width: 150px;
+    border-radius: 100%;
+}
+
+.name{
+    margin-top: 50px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.data{
+    flex-grow: 3;
+    display: flex;
+    flex-flow: column;  
+    justify-content: center;
+    /* align-items: center; */
+    flex: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.7rem;
+}
