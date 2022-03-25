@@ -13,7 +13,7 @@
 }
 
 .image{
-    margin-top: 15%;
+    margin-top: 10%;
     width:110%;
 }
 
@@ -28,7 +28,7 @@
     font-size: 18px;
     padding: 30px 50px 50px 40px;
     border-radius: 10px;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    box-shadow: rgba(12, 12, 241, 0.2) 0px 7px 29px 0px;
     margin-left: auto;
     margin-right: auto;
 }
