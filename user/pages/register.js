@@ -10,15 +10,19 @@ import {useRouter} from 'next/router'
 import { firebaseApp } from '../config/firebaseApp'
 import { getAuth, signInWithEmailAndPassword,GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword } from 'firebase/auth'
 import axios from 'axios'
+import { setUserState } from '../utils'
 
 const Register = () => {
 
     const router = useRouter();
 
     const [creds, setCreds] = useState({
+        name : "",
         identifier:"",
         password:""
     })
+
+    const userState = setUserState();
 
     const authentication = getAuth();
 
@@ -29,16 +33,27 @@ const Register = () => {
         .then((response) => {
             const firebaseUid = response.user.uid
             const email = response.user.email
-            const name = "Pranav Kumar"
+            const name = creds.name
 
-            const body = {email : email, name : name, firebaseUid : firebaseUid}
-
-            axios.post("http://localhost:8800/user", body)
+            axios.post("http://localhost:8800/user/present", {params : {firebaseUid : firebaseUid}},{
+                withCredentials: true //correct
+              })
             .then((response) => {
-                console.log(response)
-                router.push('/login')
+                if(response.data.present){
+                    console.log("Already Present")
+                    router.push('/')
+                }
+                else{
+                    const body = {email : email, name : name, firebaseUid : firebaseUid}
+
+                    axios.post("http://localhost:8800/user", body)
+                    .then((response) => {
+                        router.push('/login')
+                    })
+                    .catch(err =>  console.log(err))
+                }
             })
-            .catch(err =>  console.log(err))
+            .catch((err) => console.log(err))
         })
         .catch(err => console.log(err))
     }
@@ -55,30 +70,29 @@ const Register = () => {
             const email = user.email
             const name = user.displayName
 
-            axios.post("http://localhost:8800/user/present", {params : {firebaseUid : firebaseUid}})
+            axios.post("http://localhost:8800/user/present", {params : {firebaseUid : firebaseUid}},{
+                withCredentials: true //correct
+              })
             .then((response) => {
                 if(response.data.present){
                     console.log("Already Present")
+                    router.push('/')
                 }
                 else{
                     const body = {email : email, name : name, firebaseUid : firebaseUid}
 
                     axios.post("http://localhost:8800/user", body)
                     .then((response) => {
-                        router.push('/')
+                        router.push('/login')
                     })
                     .catch(err =>  console.log(err))
                 }
             })
             .catch((err) => console.log(err))
-            
   
         }).catch((error) => {
-            // Handle Errors here.
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            const email = error.email;
-            const credential = GoogleAuthProvider.credentialFromError(error);
+            console.log(error)
+            window.alert("Invalid username or password please try again")
         });
         
     }
@@ -96,6 +110,10 @@ const Register = () => {
                 <div className={styles.signIn}>
                     <form onSubmit={register}  className={styles.form}>
                         <h3 className={`${styles.center} ${styles.heading}`}>Register</h3>
+                        <div className={styles.element}>
+                            <label>Name</label>
+                            <input onChange={(e)=>setCreds({...creds, name:e.target.value})} type="text" name="name" id="name" value={creds.name} placeholder='Name' />
+                        </div>
                         <div className={styles.element}>
                             <label>Email</label>
                             <input onChange={(e)=>setCreds({...creds, identifier:e.target.value})} type="text" name="username" id="username" value={creds.username} placeholder='Email' />

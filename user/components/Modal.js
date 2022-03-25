@@ -5,6 +5,8 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import axios from 'axios'
+import { setUserState } from '../utils';
 
 const gender=[
     {
@@ -17,7 +19,7 @@ const gender=[
     },
     {
         value: 'Other',
-        label: 'Pranav',
+        label: 'Other',
     }
 ]
 
@@ -79,144 +81,151 @@ const useStyles = makeStyles((theme) => ({
 const Modal = ({showModal, setShowModal}) => {
 
     const classes = useStyles();
+    let user = setUserState();
 
-  const[userData, setUserData]=useState({
-      gender:"",
-      dob:"",
-      height:"",
-      weight:"",
-      bg:"",
-      diabetes:false,
-      asthma:false
-  })
+    const[userData, setUserData]=useState({
+        gender:"",
+        dob:"",
+        heightInCm:"",
+        weightInKg:"",
+        bloodGroup:"",
+        hasDiabetes:false,
+        hasAsthma:false
+    })
 
-  const handleClick=(e)=>{
-      //Add put req logic here
-      e.preventDefault()
-      setShowModal(prev=>!prev)
-      console.log(userData)
-  }
+    const handleClick=(e)=>{
+        e.preventDefault()
+        setShowModal(prev=>!prev)
 
-  return (
-    <>
-        {showModal?(
-            <div className={styles.background}>
-                <div className={styles.wrapper}>
-                    <div className={styles.close}>
-                        <button onClick={()=>setShowModal(prev=>!prev)}>X</button>
-                    </div>
-                    <div className={styles.title}>
-                        <h1>Help us you know better<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/person-lifting-weights_1f3cb-fe0f.png" alt="" className={styles.gym}/></h1>   
-                    </div>
-                    <div className={styles.body}>
-                        <form className={classes.root} onSubmit={handleClick}>
-                            <div>
+        const id = user._id;
+
+        axios.patch("http://localhost:8800/user", userData, {params : {userId : id}})
+        .then(response => {
+            console.log("User details updated successfully")
+        })
+        .catch(err => console.log(err))
+    }
+
+    return (
+        <>
+            {showModal?(
+                <div className={styles.background}>
+                    <div className={styles.wrapper}>
+                        <div className={styles.close}>
+                            <button onClick={()=>setShowModal(prev=>!prev)}>X</button>
+                        </div>
+                        <div className={styles.title}>
+                            <h1>Help us you know better<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/person-lifting-weights_1f3cb-fe0f.png" alt="" className={styles.gym}/></h1>   
+                        </div>
+                        <div className={styles.body}>
+                            <form className={classes.root} onSubmit={handleClick}>
+                                <div>
+                                    <TextField
+                                        select
+                                        label="Gender"
+                                        value={userData.gender}
+                                        onChange={e=>setUserData({...userData, gender:e.target.value})}
+                                        helperText="Select your gender"
+                                        variant="outlined"
+                                        required
+                                        >
+                                        {gender.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                    <TextField
+                                        id="date"
+                                        label="Date of Birth"
+                                        type="date"
+                                        value={userData.dob}
+                                        onChange={e=>setUserData({...userData, dob:e.target.value})}
+                                        variant='outlined'
+                                        required
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                </div>
+
+                                <div>
+                                    <TextField 
+                                        id="height" 
+                                        label="Height" 
+                                        variant="outlined" 
+                                        onChange={(e)=>setUserData({...userData,heightInCm:e.target.value})} 
+                                        required
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start">Cm</InputAdornment>,
+                                        }}
+                                    />
+                                    <TextField 
+                                        id="weight" 
+                                        label="Weight" 
+                                        variant="outlined" 
+                                        onChange={(e)=>setUserData({...userData,weightInKg:e.target.value})} 
+                                        required
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start">Kg</InputAdornment>,
+                                        }}
+                                    />
+                                </div>
+
                                 <TextField
                                     select
-                                    label="Gender"
-                                    value={userData.gender}
-                                    onChange={e=>setUserData({...userData, gender:e.target.value})}
-                                    helperText="Select your gender"
+                                    label="Blood group"
+                                    value={userData.bloodGroup}
+                                    onChange={e=>setUserData({...userData, bloodGroup:e.target.value})}
+                                    helperText="Select your blood group"
                                     variant="outlined"
-                                    required
                                     >
-                                    {gender.map((option) => (
+                                    {blood.map((option) => (
                                         <MenuItem key={option.value} value={option.value}>
                                             {option.label}
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                                <TextField
-                                    id="date"
-                                    label="Date of Birth"
-                                    type="date"
-                                    value={userData.dob}
-                                    onChange={e=>setUserData({...userData, dob:e.target.value})}
-                                    variant='outlined'
-                                    required
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                />
-                            </div>
-
-                            <div>
-                                <TextField 
-                                    id="height" 
-                                    label="Height" 
-                                    variant="outlined" 
-                                    onChange={(e)=>setUserData({...userData,height:e.target.value})} 
-                                    required
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start">Cm</InputAdornment>,
-                                    }}
-                                />
-                                <TextField 
-                                    id="weight" 
-                                    label="Weight" 
-                                    variant="outlined" 
-                                    onChange={(e)=>setUserData({...userData,weight:e.target.value})} 
-                                    required
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start">Kg</InputAdornment>,
-                                    }}
-                                />
-                            </div>
-
-                            <TextField
-                                select
-                                label="Blood group"
-                                value={userData.bg}
-                                onChange={e=>setUserData({...userData, bg:e.target.value})}
-                                helperText="Select your blood group"
-                                variant="outlined"
-                                >
-                                {blood.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                        {option.label}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                            <div>
-                                <TextField
-                                    select
-                                    label="Diabetes"
-                                    value={userData.diabetes}
-                                    onChange={e=>setUserData({...userData, diabetes:e.target.value})}
-                                    helperText="Do you have diabetes?"
-                                    variant="outlined"
-                                    >
-                                    {dis.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                                <TextField
-                                    select
-                                    label="Asthma"
-                                    value={userData.asthma}
-                                    onChange={e=>setUserData({...userData, asthma:e.target.value})}
-                                    helperText="Do you have asthma?"
-                                    variant="outlined"
-                                    >
-                                    {dis.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </div>
-                            <div className={styles.footer}>
-                                <button type="submit" >Submit 💪🏼</button>
-                            </div>
-                        </form>
+                                <div>
+                                    <TextField
+                                        select
+                                        label="Diabetes"
+                                        value={userData.hasDiabetes}
+                                        onChange={e=>setUserData({...userData, hasDiabetes:e.target.value})}
+                                        helperText="Do you have diabetes?"
+                                        variant="outlined"
+                                        >
+                                        {dis.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                    <TextField
+                                        select
+                                        label="Asthma"
+                                        value={userData.hasAsthma}
+                                        onChange={e=>setUserData({...userData, hasAsthma:e.target.value})}
+                                        helperText="Do you have asthma?"
+                                        variant="outlined"
+                                        >
+                                        {dis.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                </div>
+                                <div className={styles.footer}>
+                                    <button type="submit" >Submit 💪🏼</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        ):null}
-    </>
-  )
+            ):null}
+        </>
+    )
 }
 
 export default Modal

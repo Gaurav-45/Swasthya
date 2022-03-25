@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from '../styles/Navbar.module.css'
+import Link from 'next/link'
 
 const Navbar = () => {
   return (
@@ -10,7 +11,7 @@ const Navbar = () => {
                 <input type="text" placeholder='Search' />
             </div> */}
             <div className={styles.user}>
-                <img src="https://lh3.googleusercontent.com/ogw/ADea4I6fdtjkOOitsUPsUkVmX3WcWSwVxQDdU6p_2QMK=s32-c-mo" alt="" />
+                <Link href="user"><img src="https://lh3.googleusercontent.com/ogw/ADea4I6fdtjkOOitsUPsUkVmX3WcWSwVxQDdU6p_2QMK=s32-c-mo" alt="" /></Link>
             </div>
         </div>
         
