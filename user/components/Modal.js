@@ -1,5 +1,5 @@
 import 'date-fns';
-import React, { useState } from 'react'
+import React, { useState , useEffect } from 'react'
 import styles from '../styles/modal.module.css'
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -90,29 +90,52 @@ const Modal = ({showModal, setShowModal}) => {
         weightInKg:"",
         bloodGroup:"",
         hasDiabetes:false,
-        hasAsthma:false
+        hasAsthma:false,
+        isFirstTime : user === "Not logged in" ? false : true
     })
+
+    useEffect(() => {
+    
+        if(user){
+            const id = user._id;
+
+            axios.patch("http://localhost:8800/user", userData, {params : {userId : id}})
+            .then(response => {
+                console.log("User details updated successfully")
+            })
+            .catch(err => console.log(err))
+        }
+        
+    }, [showModal, userData.isFirstTime])
 
     const handleClick=(e)=>{
         e.preventDefault()
-        setShowModal(prev=>!prev)
+        setShowModal(false)
+        setUserData({...userData, isFirstTime : false})
+    }
 
-        const id = user._id;
-
-        axios.patch("http://localhost:8800/user", userData, {params : {userId : id}})
-        .then(response => {
-            console.log("User details updated successfully")
+    const hnadleClose = (e) => {
+        e.preventDefault()
+        setShowModal(false)
+        setUserData({
+            gender:"",
+            dob:"",
+            heightInCm:"",
+            weightInKg:"",
+            bloodGroup:"",
+            hasDiabetes:false,
+            hasAsthma:false,
+            isFirstTime : false
         })
-        .catch(err => console.log(err))
     }
 
     return (
         <>
-            {showModal?(
+            {user === null ? null : (showModal && user.isFirstTime) ?(
                 <div className={styles.background}>
                     <div className={styles.wrapper}>
                         <div className={styles.close}>
-                            <button onClick={()=>setShowModal(prev=>!prev)}>X</button>
+                            <button onClick={hnadleClose}>X</button>
                         </div>
                         <div className={styles.title}>
                             <h1>Help us you know better<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/person-lifting-weights_1f3cb-fe0f.png" alt="" className={styles.gym}/></h1>   

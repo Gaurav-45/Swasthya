@@ -16,10 +16,10 @@ export const setUserState = () => {
             {
                 setUser(resp.data.user);
             }
-            // else
-            // {
-            //     router.push('/login')
-            // }
+            else
+            {
+                return "Not logged in"
+            }
         }
         
         else
@@ -31,22 +31,3 @@ export const setUserState = () => {
 
     return user;
 }
-
-// export const logout = async () => {
-
-//     const {user,setUser} = useContext(UserContext)
-//     const router = useRouter()
-//     const resp = await axios.get("http://localhost:8800/user/logout",{withCredentials: true })
-
-//     if(resp.data)
-//     {
-//         if(resp.data.status)
-//         {
-//             setUser(null);
-//             router.push('/')
-//         }
-//         else{
-//             console.log("error has occured");
-//         }    
-//     }
-// }

@@ -63,6 +63,8 @@ const Login = () => {
             const email = user.email
             const name = user.displayName
 
+            console.log(user)
+
             axios.post("http://localhost:8800/user/present", {params : {firebaseUid : firebaseUid}},{
                 withCredentials: true //correct
               })

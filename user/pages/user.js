@@ -7,6 +7,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import { setUserState } from '../utils';
 import { UserContext } from '../UserContext';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 const gender=[
     {
@@ -83,11 +84,34 @@ const user = () => {
     const classes = useStyles();
     const userState = setUserState()
     const [disabled, setDisable] = useState(true)
+    const router = useRouter()
+    const [cnt, setCnt] = useState(0)
+    const {guser, setUser} = useContext(UserContext);
+
+    useEffect(async() => {
+        if(cnt > 0){
+            const resp = await axios.get("http://localhost:8800/user/logout",{withCredentials: true })
+
+            if(resp.data)
+            {
+                if(resp.data.status)
+                {
+                    setUser(null);
+                    router.push('/login')
+                }
+                else{
+                    console.log("error has occured");
+                }    
+            }
+        }
+    }, [cnt])
 
     useEffect(() => {
       
         if(userState!==null){
         setUserData({
+                name : userState.name === undefined ? "" : userState.name,
+                email : userState.email === undefined ? "" : userState.email,
                 gender: userState.gender === undefined ? "" : userState.gender,
                 dob: userState.dob === undefined ? "" : userState.dob,
                 heightInCm: userState.heightInCm === undefined ? "" : userState.heightInCm,
@@ -101,6 +125,8 @@ const user = () => {
     }, [userState])
 
     const[userData, setUserData]=useState({
+        name : "",
+        email : "",
         gender:"",
         dob:"",
         heightInCm:"",
@@ -133,6 +159,8 @@ const user = () => {
         e.preventDefault()
 
         setUserData({
+                name : userState.name === undefined ? "" : userState.name,
+                email : userState.email === undefined ? "" : userState.email,
                 gender: userState.gender === undefined ? "" : userState.gender,
                 dob: userState.dob === undefined ? "" : userState.dob,
                 heightInCm: userState.heightInCm === undefined ? "" : userState.heightInCm,
@@ -145,6 +173,11 @@ const user = () => {
         setDisable(prev => !prev)
     }
 
+    const handleLogout = (e) => {
+        e.preventDefault()
+        setCnt(prev => prev + 1)
+    }
+
 
     return (
         <>
@@ -152,12 +185,33 @@ const user = () => {
             <div className={styles.profile}>
                 <img src="https://lh3.googleusercontent.com/ogw/ADea4I6fdtjkOOitsUPsUkVmX3WcWSwVxQDdU6p_2QMK=s32-c-mo" alt="" className={styles.pic}/>
                 <p className={styles.name}>{userState.name}</p>
-                <p>Log out 👋</p>
+                <div className={styles.footer}>
+                    <button onClick={handleLogout}>Log out 👋</button>
+                </div>                
             </div>
             <div className={styles.data}> 
                 <h2>Profile</h2>
                     <div className={styles.body}>
                             <form className={classes.root} onSubmit={handleClick}>
+                                <div>
+                                    <TextField
+                                        id="name"
+                                        label="Name"
+                                        value={userData.name}
+                                        onChange={e=>setUserData({...userData, name : e.target.value})}
+                                        helperText="Display Name"
+                                        variant="outlined"
+                                        disabled={disabled}
+                                    />
+                                    <TextField
+                                        id="email"
+                                        label="Email"
+                                        value={userData.email}
+                                        onChange={e=> setUserData({...userData, email : e.target.value})}
+                                        variant="outlined"
+                                        disabled={true}
+                                    />
+                                </div>
                                 <div>
                                     <TextField
                                         select

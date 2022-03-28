@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useRouter} from 'next/router'
-import { setUserState, logout } from '../utils';
+import { setUserState } from '../utils';
 import { useContext } from 'react';
 import { UserContext } from '../UserContext';
 import axios from 'axios';

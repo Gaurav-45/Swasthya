@@ -1,3 +1,4 @@
+import Layout from '../components/Layout'
 import '../styles/globals.css'
 import {useState,useMemo} from 'react';
 import { UserContext } from '../UserContext'
@@ -8,7 +9,9 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <UserContext.Provider value={providerValue}>
-      <Component {...pageProps} />
+      {/* <Layout> */}
+        <Component {...pageProps} />
+      {/* </Layout> */}
     </UserContext.Provider>
 
   )

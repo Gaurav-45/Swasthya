@@ -5,14 +5,9 @@ import MyClass from '../components/MyClass'
 import { useState } from 'react'
 import Modal from '../components/Modal'
 
-import { UserContext } from '../UserContext'
-import {useContext} from 'react';
 export default function Home() {
 
-  const [showModal, setShowModal] = useState(false);
-  const handleModal=()=>{
-    setShowModal(prev=>!prev);
-  }
+  const [showModal, setShowModal] = useState(true);
 
   return (
     <div className={styles.home}>
@@ -23,7 +18,6 @@ export default function Home() {
         <MyClass/>
         <MyClass/>
       </div>
-      <button className='button' onClick={handleModal}>Im Modal</button>
       <Modal showModal={showModal} setShowModal={setShowModal}/>
     </div>
   )
