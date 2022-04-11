@@ -34,7 +34,7 @@ const Login = () => {
             axios.post("http://localhost:8800/coach/present", {params : {firebaseUid : firebaseUid}})
             .then((response) => {
                 if(response.data.present){
-                    dispatch(sessionState(response.data))
+                    dispatch(sessionState(response.data.coach))
                     router.push('/')
                 }
                 else{

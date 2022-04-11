@@ -4,23 +4,22 @@ import Image from 'next/image'
 import styles from '../styles/login.module.css'
 import Link from 'next/link'
 import google from '../public/google.svg';
-import facebook from '../public/facebook.svg'
 import {useRouter} from 'next/router'
 import { firebaseApp } from '../config/firebaseApp'
 import { getAuth, signInWithEmailAndPassword,GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword } from 'firebase/auth'
 import axios from 'axios'
-import { setUserState } from '../utils'
+import {useDispatch} from 'react-redux'
+import {sessionState} from '../actions/index'
 
 const Login = () => {
 
-    const [loggedIn,setLogin] = useState(false);
     const router = useRouter();
+    const dispatch = useDispatch();
+
     const [creds, setCreds] = useState({
         identifier:"",
         password:""
     })
-    const userstate = setUserState();
-
     const authentication = getAuth();
     
     //noraml email pass
@@ -31,11 +30,10 @@ const Login = () => {
         .then((response) => {
             const firebaseUid = response.user.uid
 
-            axios.post("http://localhost:8800/user/present", {params : {firebaseUid : firebaseUid}},{
-                withCredentials: true //correct
-            })
+            axios.post("http://localhost:8800/user/present", {params : {firebaseUid : firebaseUid}})
             .then((response) => {
                 if(response.data.present){
+                    dispatch(sessionState(response.data.user))
                     router.push('/')
                 }
                 else{
@@ -63,13 +61,10 @@ const Login = () => {
             const email = user.email
             const name = user.displayName
 
-            console.log(user)
-
-            axios.post("http://localhost:8800/user/present", {params : {firebaseUid : firebaseUid}},{
-                withCredentials: true //correct
-              })
+            axios.post("http://localhost:8800/user/present", {params : {firebaseUid : firebaseUid}})
             .then((response) => {
                 if(response.data.present){
+                    dispatch(sessionState(response.data.user))
                     console.log("Already Present")
                     router.push('/')
                 }
@@ -78,6 +73,7 @@ const Login = () => {
 
                     axios.post("http://localhost:8800/user", body)
                     .then((response) => {
+                        dispatch(sessionState(response.data.result))
                         router.push('/')
                     })
                     .catch(err =>  console.log(err))

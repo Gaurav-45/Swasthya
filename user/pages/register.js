@@ -5,12 +5,10 @@ import styles from '../styles/register.module.css'
 import Link from 'next/link'
 import registerImage from '../public/register.png'
 import google from '../public/google.svg';
-import facebook from '../public/facebook.svg'
 import {useRouter} from 'next/router'
 import { firebaseApp } from '../config/firebaseApp'
 import { getAuth, signInWithEmailAndPassword,GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword } from 'firebase/auth'
 import axios from 'axios'
-import { setUserState } from '../utils'
 
 const Register = () => {
 
@@ -21,8 +19,6 @@ const Register = () => {
         identifier:"",
         password:""
     })
-
-    const userState = setUserState();
 
     const authentication = getAuth();
 
@@ -35,9 +31,7 @@ const Register = () => {
             const email = response.user.email
             const name = creds.name
 
-            axios.post("http://localhost:8800/user/present", {params : {firebaseUid : firebaseUid}},{
-                withCredentials: true //correct
-              })
+            axios.post("http://localhost:8800/user/present", {params : {firebaseUid : firebaseUid}})
             .then((response) => {
                 if(response.data.present){
                     console.log("Already Present")
@@ -70,9 +64,7 @@ const Register = () => {
             const email = user.email
             const name = user.displayName
 
-            axios.post("http://localhost:8800/user/present", {params : {firebaseUid : firebaseUid}},{
-                withCredentials: true //correct
-              })
+            axios.post("http://localhost:8800/user/present", {params : {firebaseUid : firebaseUid}})
             .then((response) => {
                 if(response.data.present){
                     console.log("Already Present")

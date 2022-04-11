@@ -1,20 +1,21 @@
-import Layout from '../components/Layout'
 import '../styles/globals.css'
-import {useState,useMemo} from 'react';
-import { UserContext } from '../UserContext'
+import store from '../store'
+import { persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Provider } from 'react-redux';
+
+const persistor = persistStore(store)
+
 
 function MyApp({ Component, pageProps }) {
-  const [user,setUser] = useState(null);
-  const providerValue = useMemo(()=>({user,setUser}),[user,setUser])
 
   return (
-    <UserContext.Provider value={providerValue}>
-      {/* <Layout> */}
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
         <Component {...pageProps} />
-      {/* </Layout> */}
-    </UserContext.Provider>
-
-  )
+      </PersistGate>
+    </Provider>
+  );
 }
 
 export default MyApp

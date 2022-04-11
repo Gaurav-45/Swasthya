@@ -2,26 +2,26 @@ import React, {useEffect, useState, useContext} from 'react'
 import styles from '../styles/Navbar.module.css'
 import Link from 'next/link'
 import {useRouter} from 'next/router'
-import {UserContext} from '../UserContext';
 import axios from 'axios';
-import { setUserState } from '../utils';
+import { useSelector, useDispatch } from 'react-redux'
+import { sessionState } from '../actions/index'
 
 const Navbar = () => {
 
     const router = useRouter()
     const [cnt, setCnt] = useState(0)
-    const user = setUserState()
-    const {guser, setUser} = useContext(UserContext)
+    const user = useSelector((state) => state.storeSession)
+    const dispatch = useDispatch()
 
     useEffect(async() => {
             if(cnt > 0){
-                const resp = await axios.get("http://localhost:8800/user/logout",{withCredentials: true })
+                const resp = await axios.get("http://localhost:8800/user/logout")
 
                 if(resp.data)
                 {
                     if(resp.data.status)
                     {
-                        setUser(null);
+                        dispatch(sessionState(null));
                         router.push('/login')
                     }
                     else{

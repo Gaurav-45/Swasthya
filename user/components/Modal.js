@@ -6,7 +6,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import axios from 'axios'
-import { setUserState } from '../utils';
+import { useSelector, useDispatch } from 'react-redux';
+import { sessionState } from '../actions/index';
 
 const gender=[
     {
@@ -81,7 +82,8 @@ const useStyles = makeStyles((theme) => ({
 const Modal = ({showModal, setShowModal}) => {
 
     const classes = useStyles();
-    let user = setUserState();
+    const user = useSelector((state) => state.storeSession)
+    const dispatch = useDispatch()
 
     const[userData, setUserData]=useState({
         gender:"",
@@ -91,22 +93,23 @@ const Modal = ({showModal, setShowModal}) => {
         bloodGroup:"",
         hasDiabetes:false,
         hasAsthma:false,
-        isFirstTime : user === "Not logged in" ? false : true
+        isFirstTime : user === null ? false : user.isFirstTime
     })
 
     useEffect(() => {
     
-        if(user){
+        if(user && !showModal){
             const id = user._id;
 
             axios.patch("http://localhost:8800/user", userData, {params : {userId : id}})
             .then(response => {
+                dispatch(sessionState(response.data.result))
                 console.log("User details updated successfully")
             })
             .catch(err => console.log(err))
         }
         
-    }, [showModal, userData.isFirstTime])
+    }, [showModal])
 
     const handleClick=(e)=>{
         e.preventDefault()

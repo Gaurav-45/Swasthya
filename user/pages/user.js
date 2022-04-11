@@ -4,10 +4,10 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { setUserState } from '../utils';
-import { UserContext } from '../UserContext';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { useSelector, useDispatch } from 'react-redux';
+import { sessionState } from '../actions/index';
 
 const gender=[
     {
@@ -82,21 +82,21 @@ const useStyles = makeStyles((theme) => ({
 const user = () => {
 
     const classes = useStyles();
-    const userState = setUserState()
     const [disabled, setDisable] = useState(true)
     const router = useRouter()
     const [cnt, setCnt] = useState(0)
-    const {guser, setUser} = useContext(UserContext);
+    const userState = useSelector((state) => state.storeSession)
+    const dispatch = useDispatch()
 
     useEffect(async() => {
         if(cnt > 0){
-            const resp = await axios.get("http://localhost:8800/user/logout",{withCredentials: true })
+            const resp = await axios.get("http://localhost:8800/user/logout")
 
             if(resp.data)
             {
                 if(resp.data.status)
                 {
-                    setUser(null);
+                    dispatch(sessionState(null))
                     router.push('/login')
                 }
                 else{
@@ -108,7 +108,7 @@ const user = () => {
 
     useEffect(() => {
       
-        if(userState!==null){
+        if(userState){
         setUserData({
                 name : userState.name === undefined ? "" : userState.name,
                 email : userState.email === undefined ? "" : userState.email,
@@ -148,6 +148,8 @@ const user = () => {
 
         axios.patch("http://localhost:8800/user", userData, {params : {userId : id}})
         .then(res => {
+            console.log("RES",res);
+            dispatch(sessionState(res.data.result))
             console.log("User data update successfully")
         })
         .catch(err => console.log(err))
