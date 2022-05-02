@@ -1,9 +1,9 @@
-.login {
+.login{
     display: flex;
     margin: 15% 0%;
 }
 
-.container {
+.container{
     display: flex;
     margin: 0;
     position: absolute;
@@ -12,18 +12,18 @@
     transform: translateY(-50%);
 }
 
-.image {
+.image{
     margin-top: 10%;
-    width: 110%;
+    width:110%;
 }
 
-.sidehug {
+.sidehug{
     width: 50%;
     margin-left: auto;
     margin-right: auto;
 }
 
-.form {
+.form{
     width: 52%;
     font-size: 18px;
     padding: 30px 50px 50px 40px;
@@ -33,37 +33,35 @@
     margin-right: auto;
 }
 
-.signIn {
+.signIn{
     margin-left: -10%;
 }
 
-.element {
+.element{
     display: flex;
     flex-direction: column;
     margin-bottom: 1.3em;
 }
 
-.element input {
+.element input{
     line-height: 35px;
     border-radius: 5px;
     border: solid 1px rgb(175, 171, 171);
     font-size: 16px;
     padding-left: 10px;
 }
-
-.element input:focus {
+.element input:focus{
     outline: none;
     border: solid 2px rgb(39, 31, 224);
 }
-
-.element label {
+.element label{
     font-weight: 500;
     margin-bottom: 10px;
 }
 
-.btn {
+.btn{
     background-color: #ff3964;
-    border: solid 1px #ff3964 !important;
+    border:solid 1px #ff3964 !important;
     border: none;
     color: white;
     font-family: 'poppins';
@@ -73,33 +71,32 @@
     cursor: pointer;
     margin-top: 10px;
 }
-
-.btn:hover {
-    color: #ff3964;
-    background-color: white;
-    border: solid 1px #ff3964;
+.btn:hover{
+  color: #ff3964;
+  background-color: white;
+  border:solid 1px #ff3964;
 }
 
-.heading {
-    color: #5956d6;
+.heading{
+    color:#5956d6 ;
     margin-bottom: 20px;
 }
 
-.center {
+.center{
     display: flex;
     justify-content: center;
-    margin-top: 10px;
-}
+    margin-top:10px;
+} 
 
-.subtitle {
+.subtitle{
     text-align: center;
 }
 
-.subtitle a {
+.subtitle a{
     color: #ff3964;
 }
 
-.orDivider {
+.orDivider{
     width: 80%;
     margin-left: auto;
     margin-right: auto;
@@ -120,13 +117,13 @@
     align-self: center;
 }
 
-.thirdParty {
+.thirdParty{
     display: flex;
     flex-flow: column;
     margin-bottom: -35px;
 }
 
-.authBtn {
+.authBtn{
     font-family: 'poppins';
     background: transparent;
     border: none;

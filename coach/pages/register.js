@@ -54,12 +54,6 @@ const Register = () => {
   return (
     <div className={styles.login}>
         <div className={styles.container}>
-            <div className={`${styles.sidehug} ${styles.image}`}>
-                <Image
-                    src={registerImage}
-                    alt="register"
-                />
-            </div>
             <div className={styles.sidehug}>
                 <div className={styles.signIn}>
                     <form onSubmit={register}  className={styles.form}>
