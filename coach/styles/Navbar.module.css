@@ -6,10 +6,10 @@
   justify-content: space-between;
   box-shadow: rgba(36, 36, 129, 0.2) 0px 7px 29px 0px;
 }
+
 .logo{
   font-size: 20px;
 }
-
 
 .right {
   display: flex;

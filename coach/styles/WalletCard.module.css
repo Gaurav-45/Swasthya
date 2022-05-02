@@ -1,0 +1,38 @@
+.card{
+    border: solid 1px grey;
+    width: 400px;
+    height: 250px;
+    border-radius: 10px;
+    background-image: url("https://uploads-ssl.webflow.com/5ec207a448d573153616868a/60e32bd71c699439d918ecd9_Mesh%2024.jpg");
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    color: white;
+    padding: 40px 30px;
+    display: flex;
+    flex-flow: column;
+    position:relative;
+}
+
+.rupees{
+    font-size: 37px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.subtitle{
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.name{
+    position: absolute;
+    bottom: 0;
+    padding-bottom: 15px;
+}
+
+.logo{
+    position: absolute;
+    right: 0;
+    padding-top: 40px;
+    padding-right: 30px;
+}

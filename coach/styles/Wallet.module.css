@@ -1,0 +1,39 @@
+.wallet{
+    padding: 50px;
+    /* overflow-y: scroll; */
+}
+
+.history{
+    width: 100%;
+    margin-top: 80px;
+    margin-bottom: 80px;
+}
+
+.history h1{
+    margin-bottom: 40px;
+}
+
+.history table{
+    width: 100%;
+    text-align: left;
+    border: 1px solid #9932cc;
+}
+
+.history td, .history th {
+    padding: 12px;
+    font-weight: 500;
+}
+
+.history tr:nth-child(even){background-color: #eed6f9;}
+
+.history tr:hover {background-color: #ddabf6;}
+
+.tableHeading{
+    background-color: #b87cd6;
+    color: white;
+    font-size: 18px;
+}
+
+.tableHeading th{
+    font-weight: 600;
+}

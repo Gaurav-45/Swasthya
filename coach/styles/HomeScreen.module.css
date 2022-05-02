@@ -1,0 +1,19 @@
+.home{
+    overflow-y: scroll;
+    padding: 50px;
+    height: 100vh;
+    margin-bottom: 80px;
+}
+
+.home::-webkit-scrollbar {
+    display: none;
+}
+
+.classes{
+    display: flex;
+    flex-flow: row;
+}
+
+.day{
+    margin-top: 50px;
+}

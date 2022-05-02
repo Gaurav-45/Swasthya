@@ -52,9 +52,6 @@ const Login = () => {
     <div className={styles.login}>
         <div className={styles.container}>
             <div className={styles.sidehug}>
-                <img className={styles.image} src="https://vinron.in/wp-content/uploads/2021/06/Fitnessillustration.png" alt="" />
-            </div>
-            <div className={styles.sidehug}>
                 <div className={styles.signIn}>
                     <form onSubmit={handleLogin}  className={styles.form}>
                         <h3 className={`${styles.center} ${styles.heading}`}>Login</h3>
@@ -71,7 +68,6 @@ const Login = () => {
                         </div>
                     </form>
                     <p className={styles.subtitle}>Don't have an account? <Link href="/register"><a>Sign-up</a></Link></p>
-                    
                 </div>
             </div>
         </div>
