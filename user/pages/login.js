@@ -31,7 +31,7 @@ const Login = () => {
         .then((response) => {
             const firebaseUid = response.user.uid
 
-            axios.post("http://localhost:8800/user/present", {params : {firebaseUid : firebaseUid}})
+            axios.post("https://swasthya-backend.herokuapp.com/user/present", {params : {firebaseUid : firebaseUid}})
             .then((response) => {
                 if(response.data.present){
                     dispatch(sessionState(response.data.user))
@@ -62,7 +62,7 @@ const Login = () => {
             const email = user.email
             const name = user.displayName
 
-            axios.post("http://localhost:8800/user/present", {params : {firebaseUid : firebaseUid}})
+            axios.post("https://swasthya-backend.herokuapp.com/user/present", {params : {firebaseUid : firebaseUid}})
             .then((response) => {
                 if(response.data.present){
                     dispatch(sessionState(response.data.user))
@@ -72,7 +72,7 @@ const Login = () => {
                 else{
                     const body = {email : email, name : name, firebaseUid : firebaseUid}
 
-                    axios.post("http://localhost:8800/user", body)
+                    axios.post("https://swasthya-backend.herokuapp.com/user", body)
                     .then((response) => {
                         dispatch(sessionState(response.data.result))
                         router.push('/')

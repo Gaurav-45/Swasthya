@@ -135,7 +135,7 @@ const user = () => {
 
         const id = userState._id
 
-        axios.patch("http://localhost:8800/user", userData, {params : {userId : id}})
+        axios.patch("https://swasthya-backend.herokuapp.com/user", userData, {params : {userId : id}})
         .then(res => {
             console.log("RES",res);
             dispatch(sessionState(res.data.result))

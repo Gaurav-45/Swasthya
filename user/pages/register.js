@@ -31,7 +31,7 @@ const Register = () => {
             const email = response.user.email
             const name = creds.name
 
-            axios.post("http://localhost:8800/user/present", {params : {firebaseUid : firebaseUid}})
+            axios.post("https://swasthya-backend.herokuapp.com/user/present", {params : {firebaseUid : firebaseUid}})
             .then((response) => {
                 if(response.data.present){
                     console.log("Already Present")
@@ -40,7 +40,7 @@ const Register = () => {
                 else{
                     const body = {email : email, name : name, firebaseUid : firebaseUid}
 
-                    axios.post("http://localhost:8800/user", body)
+                    axios.post("https://swasthya-backend.herokuapp.com/user", body)
                     .then((response) => {
                         router.push('/login')
                     })
@@ -64,7 +64,7 @@ const Register = () => {
             const email = user.email
             const name = user.displayName
 
-            axios.post("http://localhost:8800/user/present", {params : {firebaseUid : firebaseUid}})
+            axios.post("https://swasthya-backend.herokuapp.com/user/present", {params : {firebaseUid : firebaseUid}})
             .then((response) => {
                 if(response.data.present){
                     console.log("Already Present")
@@ -73,7 +73,7 @@ const Register = () => {
                 else{
                     const body = {email : email, name : name, firebaseUid : firebaseUid}
 
-                    axios.post("http://localhost:8800/user", body)
+                    axios.post("https://swasthya-backend.herokuapp.com/user", body)
                     .then((response) => {
                         router.push('/login')
                     })

@@ -101,7 +101,7 @@ const Modal = ({showModal, setShowModal}) => {
         if(user && !showModal){
             const id = user._id;
 
-            axios.patch("http://localhost:8800/user", userData, {params : {userId : id}})
+            axios.patch("https://swasthya-backend.herokuapp.com/user", userData, {params : {userId : id}})
             .then(response => {
                 dispatch(sessionState(response.data.result))
                 console.log("User details updated successfully")
