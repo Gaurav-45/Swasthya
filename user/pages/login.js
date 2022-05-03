@@ -8,14 +8,15 @@ import {useRouter} from 'next/router'
 import { firebaseApp } from '../config/firebaseApp'
 import { getAuth, signInWithEmailAndPassword,GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword } from 'firebase/auth'
 import axios from 'axios'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {sessionState} from '../actions/index'
 
 const Login = () => {
 
     const router = useRouter();
     const dispatch = useDispatch();
-
+    const userState = useSelector((state) => state.storeSession)
+    
     const [creds, setCreds] = useState({
         identifier:"",
         password:""

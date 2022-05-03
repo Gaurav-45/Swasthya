@@ -90,19 +90,8 @@ const user = () => {
 
     useEffect(async() => {
         if(cnt > 0){
-            const resp = await axios.get("http://localhost:8800/user/logout")
-
-            if(resp.data)
-            {
-                if(resp.data.status)
-                {
-                    dispatch(sessionState(null))
-                    router.push('/login')
-                }
-                else{
-                    console.log("error has occured");
-                }    
-            }
+            dispatch(sessionState(null))
+            router.push('/login')
         }
     }, [cnt])
 
