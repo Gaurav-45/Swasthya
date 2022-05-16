@@ -127,17 +127,10 @@ const Profile = () => {
         category:["Yoga", "Endurance"]
     })
 
-    useEffect(async() => {
-        if(cnt > 0){
-            dispatch(sessionState(null))
-            router.push('/login')
-        }
-    }, [cnt])
-
     useEffect(() => {
       
         if(userState){
-        setUserData({
+            setUserData({
                 name : userState.name === undefined ? "" : userState.name,
                 email : userState.email === undefined ? "" : userState.email,
                 gender: userState.gender === undefined ? "" : userState.gender,
@@ -161,11 +154,9 @@ const Profile = () => {
 
         const id = userState._id
 
-        axios.patch("https://swasthya-backend.herokuapp.com/coach", userData, {params : {userId : id}})
+        axios.patch("https://swasthya-backend.herokuapp.com/coach", userData, {params : {coachId : id}})
         .then(res => {
-            console.log("RES",res);
             dispatch(sessionState(res.data.result))
-            console.log("User data update successfully")
         })
         .catch(err => console.log(err))
 
@@ -201,12 +192,6 @@ const Profile = () => {
         setDisable(prev => !prev)
     }
 
-    const handleLogout = (e) => {
-        e.preventDefault()
-        setCnt(prev => prev + 1)
-    }
-
-  
   return (
     <div className={styles.data}> 
                 <p className={styles.headers}>Profile picture</p>

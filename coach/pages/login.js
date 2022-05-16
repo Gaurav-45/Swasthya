@@ -31,7 +31,7 @@ const Login = () => {
             console.log(response);
             const firebaseUid = response.user.uid
 
-            axios.post("hhttps://swasthya-backend.herokuapp.com/coach/present", {params : {firebaseUid : firebaseUid}})
+            axios.post("https://swasthya-backend.herokuapp.com/coach/present", {params : {firebaseUid : firebaseUid}})
             .then((response) => {
                 if(response.data.present){
                     dispatch(sessionState(response.data.coach))
