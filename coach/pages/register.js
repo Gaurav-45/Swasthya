@@ -30,7 +30,7 @@ const Register = () => {
             const email = response.user.email
             const name = creds.name
 
-            axios.post("http://localhost:8800/coach/present", {params : {firebaseUid : firebaseUid}})
+            axios.post("https://swasthya-backend.herokuapp.com/coach/present", {params : {firebaseUid : firebaseUid}})
             .then((response) => {
                 if(response.data.present){
                     console.log("Already Present")
@@ -39,7 +39,7 @@ const Register = () => {
                 else{
                     const body = {email : email, name : name, firebaseUid : firebaseUid}
 
-                    axios.post("http://localhost:8800/coach", body)
+                    axios.post("https://swasthya-backend.herokuapp.com/coach", body)
                     .then((response) => {
                         router.push('/login')
                     })
