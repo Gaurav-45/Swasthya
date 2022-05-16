@@ -24,9 +24,9 @@ export default function Home() {
         </div>
         <div className={styles.dashboard}>
           {/* <HomeScreen/> */}
-          {/* <Profile/> */}
+          <Profile/>
           {/* <Wallet/> */}
-          <NewClass/>
+          {/* <NewClass/> */}
         </div>
       </div>
       
