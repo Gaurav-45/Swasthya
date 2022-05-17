@@ -182,11 +182,10 @@ const Profile = () => {
                 email : userState.email === undefined ? "" : userState.email,
                 gender: userState.gender === undefined ? "" : userState.gender,
                 dob: userState.dob === undefined ? "" : userState.dob,
-                heightInCm: userState.heightInCm === undefined ? "" : userState.heightInCm,
-                weightInKg: userState.weightInKg === undefined ? "" : userState.weightInKg,
-                bloodGroup: userState.bloodGroup === undefined ? "" : userState.bloodGroup,
-                hasDiabetes: userState.hasDiabetes ? userState.hasDiabetes : false,
-                hasAsthma: userState.hasAsthma ? userState.hasAsthma : false
+                phoneNumber1: userState.phoneNumber1 === undefined ? "" : userState.phoneNumber1,
+                experience: userState.experience === undefined ? "0 years" : userState.experience,
+                bio: userState.bio === undefined ? "" : userState.bio,
+                category: userState.category === undefined ? [] : userState.category
             })
 
         setDisable(prev => !prev)
