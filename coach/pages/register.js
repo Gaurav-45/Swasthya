@@ -1,15 +1,11 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import styles from '../styles/register.module.css'
-import Link from 'next/link'
 import registerImage from '../public/register.png'
-import google from '../public/google.svg';
 import {useRouter} from 'next/router'
 import { firebaseApp } from '../config/firebaseApp'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 import axios from 'axios'
-import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
 
 const Register = () => {
 
@@ -27,10 +23,6 @@ const Register = () => {
 
     const register = e =>{
         e.preventDefault();
-
-        if(isError){
-            alert("Please enter the valid data");
-        }
 
         createUserWithEmailAndPassword(authentication, creds.identifier, creds.password)
         .then((response) => {
@@ -70,7 +62,7 @@ const Register = () => {
             </div>
             <div className={styles.sidehug}>
                 <div className={styles.signIn}>
-                    <form onSubmit={register}  className={styles.form} disabled={isError}>
+                    <form onSubmit={register}  className={styles.form}>
                         <h3 className={`${styles.center} ${styles.heading}`}>Register</h3>
                         <div className={styles.element}>
                             <label>Name</label>
@@ -99,7 +91,7 @@ const Register = () => {
                             {isError ? <p className={styles.error}>Please enter a valid phone number</p>:null}
                         </div>
                         <div className={styles.center}>
-                            <input type='submit' value='Register' className={styles.btn} />
+                            <input type='submit' value='Register' className={isError ? `${styles.disable} ${styles.btn}` : `${styles.btn}` } disabled={isError}/>
                         </div>
                     </form>
                 </div>
