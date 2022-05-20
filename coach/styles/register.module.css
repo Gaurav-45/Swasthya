@@ -138,3 +138,9 @@
     align-items: center;
     cursor: pointer;
 }
+
+.error{
+    color: red;
+    font-size: 12px;
+    margin-top: 1px;
+}
