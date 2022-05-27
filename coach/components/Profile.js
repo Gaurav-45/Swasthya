@@ -10,7 +10,20 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 import { sessionState } from '../actions/index';
+import Select from '@material-ui/core/Select';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 const gender=[
   {
@@ -27,51 +40,29 @@ const gender=[
   }
 ]
 
-const blood=[
-  {
-      value: 'A+',
-      label: 'A+',
-  },
-  {
-      value: 'A-',
-      label: 'A-',
-  },
-  {
-      value: 'B+',
-      label: 'B+',
-  },
-  {
-      value: 'B-',
-      label: 'B-',
-  },
-  {
-      value: 'AB+',
-      label: 'AB+',
-  },
-  {
-      value: 'AB-',
-      label: 'AB-',
-  },
-  {
-      value: 'O+',
-      label: 'O+',
-  },
-  {
-      value: 'O-',
-      label: 'O-',
-  }
+const categories=[
+    {
+        key:1,
+        value: "Cat1"
+    },
+    {
+        key:2,
+        value: "Cat2"
+    },
+    {
+        key:3,
+        value: "Cat3"
+    },
+    {
+        key:4,
+        value: "Cat4"
+    },
+    {
+        key:5,
+        value: "Cat5"
+    }
 ]
 
-const dis=[
-  {
-      value: true,
-      label: 'Yes',
-  },
-  {
-      value: false,
-      label: 'No',
-  }
-]
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -102,7 +93,6 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: 0
     }
   }
-
 }));
 
 
@@ -124,7 +114,7 @@ const Profile = () => {
         dob:"",
         experience:"",
         bio:"",
-        category:["Yoga", "Endurance"]
+        category:[]
     })
 
     useEffect(() => {
@@ -151,7 +141,7 @@ const Profile = () => {
 
     const handleSave = (e) => {
         e.preventDefault()
-
+        console.log(userData)
         const id = userState._id
 
         axios.patch("https://swasthya-backend.herokuapp.com/coach", userData, {params : {coachId : id}})
@@ -169,9 +159,10 @@ const Profile = () => {
     };
 
     const addNewCat=(e)=>{
-        e.preventDefault()
-        userData.category.push(newCatergory);
-        setNewCategory("")
+        let newCat=userData.category;
+        newCat.push(e.target.value);
+        setUserData({...userData, category: newCat})
+        console.log(userData.category)
     }
 
     const handleCancel = (e) => {
@@ -305,16 +296,23 @@ const Profile = () => {
                                     </Paper>
                                 </div>
                                 {!disabled && <div className={styles.add}>
-                                        <TextField
-                                            id="newCatergory"
-                                            label="Add new catergory"
-                                            value={newCatergory}
-                                            onChange={e=> setNewCategory(e.target.value)}
-                                            variant="outlined"
-                                        />
-                                        <button onClick={addNewCat} className={styles.addButton}>
-                                            Add
-                                        </button>
+                                        <InputLabel id="demo-controlled-open-select-label">Choose your category</InputLabel>
+                                        <Select
+                                            displayEmpty
+                                            onChange={addNewCat}
+                                            input={<Input />}
+                                            MenuProps={MenuProps}
+                                            placeholder="Choose your category"
+                                        >
+                                            <MenuItem disabled value="">
+                                                Choose your category
+                                            </MenuItem>
+                                            {categories.map((cat) => (
+                                                <MenuItem key={cat.key} value={cat.value} disabled={userData.category.includes(cat.value)}>
+                                                    {cat.value}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
                                 </div>}
                                 
                                 

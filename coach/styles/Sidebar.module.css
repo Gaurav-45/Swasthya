@@ -5,6 +5,8 @@
     height: 90vh;
     /* position: sticky; */
     overflow-y: hidden;
+    background-color: #28282B;
+    color: white;
 }
 
 .nav{
@@ -12,6 +14,7 @@
     flex-flow: column;
     justify-content: center;
     align-items: center;
+    
 }
 
 .item{
@@ -33,9 +36,9 @@
 
 .newClass{
     font-size: 22px;
-    border: 1px solid rgba(12, 12, 241, 0.2);
+    border: 2px solid rgba(236, 236, 244, 0.2);
     padding: 5px 30px;
     border-radius: 15px;
-    box-shadow: rgba(12, 12, 241, 0.2) 0px 7px 29px 0px;
+    box-shadow: rgba(10, 10, 245, 0.2) 5px 10px 35px 5px;
     margin-bottom: 30px;
 }
