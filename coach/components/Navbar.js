@@ -35,18 +35,21 @@ const Navbar = () => {
         router.push('/register')
     }
 
+    const handleDashboard = (e) => {
+        e.preventDefault()
+        router.push('/');
+    }
+
     return (
         <div className={styles.nav}>
             <div className={styles.logo}>Swasthya</div>
             <div className={styles.right}>
-                {/* <div className={styles.search}>
-                    <input type="text" placeholder='Search' />
-                </div> */}
                 {!user && <div className={styles.navbutton}>
                     <button onClick={handleLogin}>Login</button>
                     <button onClick={handleSignup}>Sign up</button>
                 </div>}
                 {user && <div className={styles.navbutton}>
+                    <button onClick={handleDashboard}>Dashboard</button>
                     <button onClick={handleClick}>Logout</button>
                 </div>}
                 {user && <div className={styles.user}>

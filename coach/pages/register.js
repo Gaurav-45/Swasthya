@@ -29,6 +29,7 @@ const Register = () => {
             const firebaseUid = response.user.uid
             const email = response.user.email
             const name = creds.name
+            const phone = creds.phone
 
             axios.post("https://swasthya-backend.herokuapp.com/coach/present", {params : {firebaseUid : firebaseUid}})
             .then((response) => {
@@ -37,7 +38,8 @@ const Register = () => {
                     router.push('/')
                 }
                 else{
-                    const body = {email : email, name : name, firebaseUid : firebaseUid}
+
+                    const body = {email : email, name : name, firebaseUid : firebaseUid, phoneNumber1: phone}
 
                     axios.post("https://swasthya-backend.herokuapp.com/coach", body)
                     .then((response) => {
